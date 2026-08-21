@@ -1,0 +1,25 @@
+# Projeto: white-belt-python-challenge
+
+# Materiais de referência usados apenas localmente para preparar o exercício.
+# Este diretório não deve ser versionado nem publicado.
+/base/
+
+# Ambientes e artefatos locais
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.sqlite3
+*.db
+.env
+.env.*
+!.env.example
+logs/
+build/
+dist/
+*.egg-info/
