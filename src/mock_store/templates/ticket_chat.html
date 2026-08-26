@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Chamado #{{ ticket.id }} · Mock Store Enterprise{% endblock %}
+{% block container_class %}narrow{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+  <a href="{{ url_for('support.tickets_page') }}">← Voltar para lista de chamados</a>
+</div>
+
+<div class="card-header" style="border-bottom: none; margin-bottom: 20px; padding-bottom: 0;">
+  <div>
+    <p class="eyebrow">CANAL DE ATENDIMENTO VIP ENTERPRISE</p>
+    <h1 style="font-size: 2rem; margin: 4px 0 0; color: var(--slate-900);">Chamado #{{ ticket.id }}</h1>
+    <p class="muted" style="margin: 4px 0 0;">{{ ticket.subject }} · Cliente: <strong>{{ ticket.customer }}</strong> · <span style="color: #059669; font-weight: 600;">SLA Contratual: 15 min</span></p>
+  </div>
+  <span class="badge badge-{{ ticket.status }}" style="font-size: 0.88rem; padding: 6px 14px;">
+    {% if ticket.status == 'open' %}Aberto{% else %}Encerrado{% endif %}
+  </span>
+</div>
+
+<section class="card chat-card">
+  <div class="card-header" style="margin-bottom: 0;">
+    <h2>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+      <span>Conversas do chamado</span>
+    </h2>
+    <span class="muted" style="font-size: 0.8rem; font-weight: 600;">{{ messages|length }} mensagem(ns) · Criptografia em Trânsito</span>
+  </div>
+
+  <div class="chat-window">
+    {% for message in messages %}
+      <article class="bubble bubble-{{ message.sender_role }} {% if message.sender_role == user.role %}bubble-right{% else %}bubble-left{% endif %}">
+        <div class="bubble-meta">
+          <span>{{ message.sender_name }}</span>
+          <span class="bubble-role-badge">{% if message.sender_role == 'admin' %}Atendente Especialista{% else %}Cliente Verificado{% endif %}</span>
+          <span>•</span>
+          <span>{{ message.created_at }}</span>
+        </div>
+        <p>{{ message.body|safe }}</p>
+      </article>
+    {% else %}
+      <p class="muted" style="text-align: center; margin: auto;">Nenhuma mensagem registrada neste chamado.</p>
+    {% endfor %}
+  </div>
+
+  <div class="chat-input-card">
+    <form method="post" action="{{ url_for('support.send_message_page', ticket_id=ticket.id) }}">
+      <label for="message" style="margin-top: 0;">Responder ao atendimento prioritário</label>
+      <textarea id="message" name="message" rows="4" placeholder="Escreva sua mensagem para o especialista de contas..."></textarea>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
+        <span class="muted" style="font-size: 0.78rem;">🔒 Transmissão protegida por protocolo corporativo</span>
+        <button class="btn" type="submit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <span>Enviar mensagem</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="nps-slop-card">
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+      <span style="font-size: 0.85rem; font-weight: 600; color: #374151;">Como você avalia este atendimento até o momento?</span>
+      <div class="nps-stars">
+        <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+        <span style="font-size: 0.75rem; color: #6b7280; font-weight: 600;">(CSAT 5.0)</span>
+      </div>
+    </div>
+  </div>
+
+  {% if user.role == 'admin' %}
+  <div class="ai-summary-card">
+    <div class="ai-summary-header">
+      <div>
+        <h3 style="margin: 0; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
+          <span>✨ Assistente de Resumo Operacional</span>
+          <span class="ai-badge">IA Cognitiva</span>
+        </h3>
+        <p class="muted" style="margin: 4px 0 0; font-size: 0.82rem;">Gere uma síntese executiva deste chamado via modelo local com análise de sentimento.</p>
+      </div>
+      <form class="summary-form" method="post" action="{{ url_for('support.ticket_summary_page', ticket_id=ticket.id) }}" style="margin: 0; padding: 0; border: none;">
+        <button class="btn btn-ai" type="submit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+          <span>Gerar resumo</span>
+        </button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

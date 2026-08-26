@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}Entrar · Mock Store{% endblock %}
+{% block body_class %}centered-page{% endblock %}
+{% block container_class %}login-container-wrapper{% endblock %}
+
+{% block content %}
+<div class="card login-card">
+  <div class="login-header">
+    <p class="eyebrow">SISTEMA DE OPERAÇÕES</p>
+    <h1>Acesso ao Painel</h1>
+    <p class="muted">Autentique-se com uma conta de demonstração.</p>
+  </div>
+
+  {% if error %}
+  <div class="alert error" role="alert">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span>{{ error }}</span>
+  </div>
+  {% endif %}
+
+  <form method="post" id="login-form">
+    <div class="form-group">
+      <label for="username">Usuário</label>
+      <input id="username" name="username" required autocomplete="username" placeholder="Ex: alice ou clara" autofocus>
+    </div>
+    
+    <div class="form-group">
+      <label for="password">Senha</label>
+      <input id="password" name="password" required type="password" autocomplete="current-password" placeholder="Digite sua senha">
+    </div>
+
+    <button class="btn" type="submit" id="login-submit-btn" style="width: 100%; margin-top: 10px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      <span>Entrar no Sistema</span>
+    </button>
+  </form>
+</div>
+
+<!-- Card Flutuante Lateral de Contas de Demonstração -->
+<aside class="floating-demo-card" id="demo-accounts-card" aria-label="Contas de demonstração">
+  <div class="floating-demo-header">
+    <div class="floating-demo-title-wrap">
+      <div class="floating-demo-icon">💡</div>
+      <div>
+        <h2 class="floating-demo-title">Contas de Teste</h2>
+        <p class="floating-demo-subtitle">Clique para preencher o formulário</p>
+      </div>
+    </div>
+    <button type="button" class="floating-demo-close" id="close-demo-card" aria-label="Fechar painel de contas de teste" title="Fechar painel">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <div class="floating-demo-content">
+    <div class="floating-demo-section">
+      <span class="floating-demo-section-label">Administrador</span>
+      <div class="demo-user-card is-admin" data-username="clara" data-password="admin123" role="button" tabindex="0" title="Clique para autenticar como Clara (Admin)">
+        <div class="demo-user-avatar admin-avatar">C</div>
+        <div class="demo-user-meta">
+          <div class="demo-user-top">
+            <span class="demo-user-name">Clara Oliveira</span>
+            <span class="demo-admin-badge">Admin</span>
+          </div>
+          <div class="demo-user-creds">
+            <code>clara</code> <span class="cred-sep">•</span> <code>admin123</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="floating-demo-section">
+      <div class="floating-demo-section-header">
+        <span class="floating-demo-section-label">Clientes</span>
+        <span class="floating-demo-pwd-hint">Senha: <code>user123</code></span>
+      </div>
+      <div class="demo-users-list">
+        <div class="demo-user-card" data-username="alice" data-password="user123" role="button" tabindex="0" title="Clique para autenticar como Alice">
+          <div class="demo-user-avatar">A</div>
+          <div class="demo-user-meta">
+            <span class="demo-user-name">Alice Silva</span>
+            <code class="demo-user-login">alice</code>
+          </div>
+        </div>
+        <div class="demo-user-card" data-username="bruno" data-password="user123" role="button" tabindex="0" title="Clique para autenticar como Bruno">
+          <div class="demo-user-avatar">B</div>
+          <div class="demo-user-meta">
+            <span class="demo-user-name">Bruno Santos</span>
+            <code class="demo-user-login">bruno</code>
+          </div>
+        </div>
+        <div class="demo-user-card" data-username="daniela" data-password="user123" role="button" tabindex="0" title="Clique para autenticar como Daniela">
+          <div class="demo-user-avatar">D</div>
+          <div class="demo-user-meta">
+            <span class="demo-user-name">Daniela Souza</span>
+            <code class="demo-user-login">daniela</code>
+          </div>
+        </div>
+        <div class="demo-user-card" data-username="eduardo" data-password="user123" role="button" tabindex="0" title="Clique para autenticar como Eduardo">
+          <div class="demo-user-avatar">E</div>
+          <div class="demo-user-meta">
+            <span class="demo-user-name">Eduardo Lima</span>
+            <code class="demo-user-login">eduardo</code>
+          </div>
+        </div>
+        <div class="demo-user-card" data-username="fernanda" data-password="user123" role="button" tabindex="0" title="Clique para autenticar como Fernanda">
+          <div class="demo-user-avatar">F</div>
+          <div class="demo-user-meta">
+            <span class="demo-user-name">Fernanda Costa</span>
+            <code class="demo-user-login">fernanda</code>
+          </div>
+        </div>
+        <div class="demo-user-card" data-username="gabriel" data-password="user123" role="button" tabindex="0" title="Clique para autenticar como Gabriel">
+          <div class="demo-user-avatar">G</div>
+          <div class="demo-user-meta">
+            <span class="demo-user-name">Gabriel Pereira</span>
+            <code class="demo-user-login">gabriel</code>
+          </div>
+        </div>
+        <div class="demo-user-card" data-username="helena" data-password="user123" role="button" tabindex="0" title="Clique para autenticar como Helena">
+          <div class="demo-user-avatar">H</div>
+          <div class="demo-user-meta">
+            <span class="demo-user-name">Helena Rodrigues</span>
+            <code class="demo-user-login">helena</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Botão flutuante para reabrir caso o usuário feche -->
+<button type="button" class="floating-demo-toggle" id="open-demo-card" aria-label="Abrir lista de contas de demonstração" title="Ver contas de teste">
+  <span class="toggle-icon">💡</span>
+  <span class="toggle-text">Contas de Teste</span>
+</button>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function() {
+    const card = document.getElementById('demo-accounts-card');
+    const closeBtn = document.getElementById('close-demo-card');
+    const openBtn = document.getElementById('open-demo-card');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+
+    function closeCard() {
+      if (card) card.classList.add('is-closed');
+      if (openBtn) openBtn.classList.add('is-visible');
+    }
+
+    function openCard() {
+      if (card) card.classList.remove('is-closed');
+      if (openBtn) openBtn.classList.remove('is-visible');
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closeCard);
+    }
+    if (openBtn) {
+      openBtn.addEventListener('click', openCard);
+    }
+
+    document.querySelectorAll('.demo-user-card').forEach(function(item) {
+      function fillCredentials() {
+        const u = item.getAttribute('data-username');
+        const p = item.getAttribute('data-password');
+        if (u && usernameInput) {
+          usernameInput.value = u;
+        }
+        if (p && passwordInput) {
+          passwordInput.value = p;
+        }
+        item.classList.add('is-selected');
+        setTimeout(function() {
+          item.classList.remove('is-selected');
+        }, 300);
+      }
+
+      item.addEventListener('click', fillCredentials);
+      item.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          fillCredentials();
+        }
+      });
+    });
+  })();
+</script>
+{% endblock %}
+
+{% block footer %}{% endblock %}

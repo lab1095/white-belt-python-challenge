@@ -1,0 +1,19 @@
+======================================================================
+MOCK STORE ENTERPRISE — COMPROVANTE FISCAL E LOGÍSTICO DIGITAL
+======================================================================
+Código do Pedido      : {order_number}
+Titular / Cliente     : {customer}
+Data do Registro      : {placed_at}
+Endereço de Entrega   : {shipping_address}
+Status da Operação    : {status}
+----------------------------------------------------------------------
+ITENS DISCRIMINADOS:
+{items_list}
+----------------------------------------------------------------------
+Valor Total da Compra : R$ {total}
+Código de Autenticação: {auth_code}
+Ambiente              : Produção Sintética Mock Store
+Integridade           : SHA256-VERIFIED-LOCAL
+======================================================================
+Agradecemos a sua preferência na Mock Store Enterprise!
+======================================================================

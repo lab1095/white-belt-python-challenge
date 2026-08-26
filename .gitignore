@@ -1,10 +1,7 @@
-# Projeto: white-belt-python-challenge
-
-# Materiais de referência usados apenas localmente para preparar o exercício.
-# Este diretório não deve ser versionado nem publicado.
+# Local-only files
 /base/
 
-# Ambientes e artefatos locais
+# Environments and generated artifacts
 .venv/
 venv/
 __pycache__/

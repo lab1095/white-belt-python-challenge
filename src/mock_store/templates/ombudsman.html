@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Canal de Ouvidoria & Auditoria Contínua · Mock Store{% endblock %}
+{% block container_class %}narrow{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+  <a href="{{ url_for('dashboard') if user else url_for('auth.login') }}">← Início</a>
+  <span>/</span>
+  <span>Governança & Compliance</span>
+</div>
+
+<div class="card-header" style="border-bottom: none; margin-bottom: 24px; padding-bottom: 0;">
+  <div>
+    <p class="eyebrow">CANAL DE OUVIDORIA & ÉTICA 360</p>
+    <h1 style="font-size: 2.1rem; margin: 6px 0 8px; color: var(--slate-900);">Ouvidoria & Auditoria Contínua</h1>
+    <p class="muted" style="margin: 0; font-size: 1.05rem;">Canal independente para reporte de desvios éticos, sugestões de sinergia e conformidade.</p>
+  </div>
+  {% if user and user.role == 'admin' %}
+  <a class="button-link ai small" href="{{ url_for('governance.ombudsman_admin') }}">
+    <span>Painel de Auditoria (Admin) →</span>
+  </a>
+  {% endif %}
+</div>
+
+{% if submitted %}
+<div class="alert success" role="alert" style="margin-bottom: 24px;">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+  <div>
+    <strong style="display: block;">Manifestação Registrada com Sucesso!</strong>
+    <span style="font-size: 0.85rem;">Seu relato foi encriptado e encaminhado ao Comitê de Auditoria e Governança da Mock Store. Protocolo: OUV-{{ range(1000, 9999)|random }}-2026.</span>
+  </div>
+</div>
+{% endif %}
+
+<section class="card">
+  <div class="card-header">
+    <h2>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Formulário de Manifestação Confidencial</span>
+    </h2>
+    <span class="smart-track-pill">Canal Criptografado</span>
+  </div>
+
+  <form method="post" action="{{ url_for('governance.ombudsman') }}">
+    <div class="form-group">
+      <label for="reporter_name">Identificação do Manifestante</label>
+      <input id="reporter_name" name="reporter_name" value="{{ user.display_name if user else 'Manifestante Anônimo' }}" placeholder="Seu nome ou mantenha como anônimo">
+    </div>
+
+    <div class="form-group">
+      <label for="category">Categoria do Reporte</label>
+      <select id="category" name="category">
+        {% for cat in categories %}
+        <option value="{{ cat }}">{{ cat }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="message">Detalhamento da Manifestação / Evidência</label>
+      <textarea id="message" name="message" rows="6" required placeholder="Descreva os fatos, datas, agentes ou processos envolvidos com clareza..."></textarea>
+    </div>
+
+    <div class="form-actions">
+      <a class="button-link secondary" href="{{ url_for('dashboard') if user else url_for('auth.login') }}">Cancelar</a>
+      <button class="btn" type="submit">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        <span>Enviar Manifestação</span>
+      </button>
+    </div>
+  </form>
+</section>
+{% endblock %}

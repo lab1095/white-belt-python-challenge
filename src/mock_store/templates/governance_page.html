@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} · Mock Store Enterprise{% endblock %}
+{% block container_class %}narrow{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+  <a href="{{ url_for('dashboard') if user else url_for('auth.login') }}">← Início</a>
+  <span>/</span>
+  <span>{{ page.tag }}</span>
+</div>
+
+<div class="card-header" style="border-bottom: none; margin-bottom: 24px; padding-bottom: 0;">
+  <div>
+    <p class="eyebrow">{{ page.tag }}</p>
+    <h1 style="font-size: 2.1rem; margin: 6px 0 8px; color: var(--slate-900);">{{ page.title }}</h1>
+    <p class="muted" style="margin: 0; font-size: 1.05rem;">{{ page.subtitle }}</p>
+  </div>
+  <span class="compliance-tag" style="font-size: 0.8rem; padding: 6px 12px;">Revisão: {{ page.updated }}</span>
+</div>
+
+<article class="card slop-article-card">
+  <div class="slop-meta-box">
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <span style="font-size: 1.4rem;">📜</span>
+      <div>
+        <strong style="font-size: 0.9rem; color: var(--slate-900); display: block;">Documento Normativo Oficial</strong>
+        <span class="muted" style="font-size: 0.78rem;">Publicado pelo Comitê de Governança Cognitiva & Sinergia 360</span>
+      </div>
+    </div>
+    <span class="smart-track-pill">Status: Homologado</span>
+  </div>
+
+  <div class="slop-article-body">
+    {% for section in page.sections %}
+    <section class="slop-section">
+      <h3>{{ section.heading }}</h3>
+      <p>{{ section.text }}</p>
+    </section>
+    {% endfor %}
+  </div>
+
+  <div class="slop-article-footer">
+    <p class="muted" style="font-size: 0.82rem; margin: 0;">
+      Para manifestações ou auditorias referentes a este documento, utilize o nosso 
+      <a href="{{ url_for('governance.ombudsman') }}" style="font-weight: 700;">Canal de Ouvidoria & Auditoria Contínua</a>.
+    </p>
+  </div>
+</article>
+{% endblock %}

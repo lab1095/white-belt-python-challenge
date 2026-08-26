@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Painel de Auditoria da Ouvidoria · Mock Store Admin{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+  <a href="{{ url_for('dashboard') }}">← Painel Principal</a>
+  <span>/</span>
+  <a href="{{ url_for('governance.ombudsman') }}">Ouvidoria Pública</a>
+</div>
+
+<div class="card-header" style="border-bottom: none; margin-bottom: 24px; padding-bottom: 0;">
+  <div>
+    <p class="eyebrow">PAINEL EXCLUSIVO DE AUDITORIA & COMPLIANCE</p>
+    <h1 style="font-size: 2rem; margin: 4px 0 0; color: var(--slate-900);">Registros de Ouvidoria & Auditoria</h1>
+    <p class="muted" style="margin: 4px 0 0;">Visualização confidencial de manifestações corporativas registradas.</p>
+  </div>
+  <form class="search-box" method="get" action="{{ url_for('governance.ombudsman_admin') }}">
+    <label class="sr-only" for="q">Filtrar relatos</label>
+    <input id="q" name="q" value="{{ query }}" placeholder="Filtrar por palavra-chave ou categoria...">
+    <button class="btn" type="submit">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <span>Filtrar</span>
+    </button>
+  </form>
+</div>
+
+<section class="card">
+  <div class="card-header">
+    <h2>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span>Manifestações Recebidas</span>
+    </h2>
+    <span class="muted" style="font-size: 0.85rem;">Total de registros: <strong>{{ reports|length }}</strong></span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Protocolo</th>
+          <th>Data</th>
+          <th>Manifestante</th>
+          <th>Categoria</th>
+          <th>Status</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for rep in reports %}
+        <tr>
+          <td style="font-family: var(--font-mono); font-weight: 700; color: var(--slate-900);">#OUV-{{ rep.id }}</td>
+          <td style="font-size: 0.88rem; white-space: nowrap;">{{ rep.created_at[:10] }}</td>
+          <td><strong>{{ rep.reporter_name }}</strong></td>
+          <td><span class="smart-track-pill">{{ rep.category }}</span></td>
+          <td>
+            <span class="badge {% if rep.status == 'resolved' %}badge-delivered{% elif rep.status == 'dismissed' %}badge-closed{% else %}badge-processing{% endif %}">
+              {% if rep.status == 'resolved' %}Resolvido
+              {% elif rep.status == 'in_progress' %}Em Investigação
+              {% elif rep.status == 'dismissed' %}Arquivado
+              {% else %}Em Análise{% endif %}
+            </span>
+          </td>
+          <td>
+            <a class="button-link secondary small" href="{{ url_for('governance.ombudsman_detail', report_id=rep.id) }}">
+              <span>Visualizar</span>
+            </a>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" class="muted" style="text-align: center; padding: 36px 0;">
+            Nenhuma manifestação encontrada{% if query %} para o termo "{{ query }}"{% endif %}.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

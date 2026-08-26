@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Pedidos · Mock Store{% endblock %}
+
+{% block content %}
+<div class="card-header" style="border-bottom: none; margin-bottom: 24px; padding-bottom: 0;">
+  <div>
+    <p class="eyebrow">CONSULTA</p>
+    <h1 style="font-size: 1.9rem; margin: 4px 0 0; color: var(--slate-900);">Gerenciamento de Pedidos</h1>
+  </div>
+  <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+    <a class="button-link secondary" href="{{ url_for('order_export_preview') }}" title="Gerar prévia de exportação dos pedidos">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span>Prévia de exportação</span>
+    </a>
+    <form class="search-box" method="get" action="{{ url_for('orders.order_search') }}">
+      <label class="sr-only" for="q">Buscar pedido</label>
+      <input id="q" name="q" value="{{ query }}" placeholder="Buscar por número do pedido...">
+      <button class="btn" type="submit">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <span>Buscar</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<section class="card">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Cliente</th>
+          <th>Status</th>
+          <th>Total</th>
+          <th>Data</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        <tr>
+          <td>
+            <a class="order-link" href="{{ url_for('orders.order_detail_page', order_id=order.id) }}">
+              {{ order.order_number }}
+            </a>
+          </td>
+          <td>{{ order.customer }}</td>
+          <td>
+            <span class="badge badge-{{ order.status }}">
+              {% if order.status == 'processing' %}Em processamento
+              {% elif order.status == 'shipped' %}Enviado
+              {% else %}Entregue{% endif %}
+            </span>
+          </td>
+          <td class="price-tag">R$ {{ '%.2f'|format(order.total) }}</td>
+          <td>{{ order.placed_at }}</td>
+          <td>
+            <a class="button-link small secondary" href="{{ url_for('orders.order_detail_page', order_id=order.id) }}">
+              Visualizar
+            </a>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" class="muted" style="text-align: center; padding: 36px 0;">
+            Nenhum pedido encontrado{% if query %} para a busca "{{ query }}"{% endif %}.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

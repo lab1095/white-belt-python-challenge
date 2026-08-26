@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Chamados · Mock Store{% endblock %}
+
+{% block content %}
+<div class="card-header" style="border-bottom: none; margin-bottom: 24px; padding-bottom: 0;">
+  <div>
+    <p class="eyebrow">ATENDIMENTO</p>
+    <h1 style="font-size: 2rem; margin: 4px 0 0; color: var(--slate-900);">Chamados de suporte</h1>
+    <p class="muted" style="margin: 4px 0 0;">Histórico e acompanhamento de chamados e solicitações.</p>
+  </div>
+  {% if user.role == 'customer' %}
+  <a class="button-link" href="{{ url_for('support.new_ticket_page') }}">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    <span>Criar novo chamado</span>
+  </a>
+  {% endif %}
+</div>
+
+<section class="card">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Número</th>
+          <th>Data de abertura</th>
+          <th>Assunto</th>
+          <th>Status</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ticket in tickets %}
+        <tr class="ticket-row">
+          <td style="font-family: var(--font-mono); font-weight: 700; color: var(--slate-900);">#{{ ticket.id }}</td>
+          <td>{{ ticket.created_at }}</td>
+          <td style="font-weight: 600;">{{ ticket.subject }}</td>
+          <td>
+            <span class="badge badge-{{ ticket.status }}">
+              {% if ticket.status == 'open' %}Aberto{% else %}Encerrado{% endif %}
+            </span>
+          </td>
+          <td>
+            <a class="button-link small secondary" href="{{ url_for('support.ticket_page', ticket_id=ticket.id) }}">
+              Ver mensagens
+            </a>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="5" class="muted" style="text-align: center; padding: 36px 0;">
+            Nenhum chamado de suporte encontrado.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Novo chamado · Mock Store{% endblock %}
+{% block container_class %}narrow{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+  <a href="{{ url_for('support.tickets_page') }}">← Voltar para lista de chamados</a>
+</div>
+
+<div class="card-header" style="border-bottom: none; margin-bottom: 24px; padding-bottom: 0;">
+  <div>
+    <p class="eyebrow">ATENDIMENTO</p>
+    <h1 style="font-size: 2rem; margin: 4px 0 0; color: var(--slate-900);">Abrir Novo Chamado</h1>
+    <p class="muted" style="margin: 4px 0 0;">Solicitante: <strong>{{ user.display_name }}</strong></p>
+  </div>
+</div>
+
+<section class="card">
+  <form method="post" action="{{ url_for('support.create_ticket_page') }}">
+    <div class="form-group">
+      <label for="subject">Assunto Principal</label>
+      <select id="subject" name="subject">
+        {% for subject in subjects %}
+        <option value="{{ subject }}">{{ subject }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="message">Mensagem e Detalhes da Solicitação</label>
+      <textarea id="message" name="message" rows="8" placeholder="Descreva sua dúvida, problema com pedido ou solicitação de atendimento com o máximo de detalhes possível..."></textarea>
+    </div>
+
+    <div class="form-actions">
+      <a class="button-link secondary" href="{{ url_for('support.tickets_page') }}">Cancelar</a>
+      <button class="btn" type="submit">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        <span>Abrir Chamado</span>
+      </button>
+    </div>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}Painel · Mock Store Enterprise{% endblock %}
+
+{% block content %}
+<div class="corporate-announcement-banner">
+  <div class="announcement-content">
+    <span class="announcement-icon">✨</span>
+    <div>
+      <strong>Novo Módulo de Orquestração Cognitiva v4.2 Disponível:</strong>
+      <span>Todos os pedidos agora contam com roteamento preditivo baseado em grafos temporais.</span>
+    </div>
+  </div>
+  <a href="{{ url_for('governance.cognitive_orchestration') }}" class="announcement-cta">Saber mais →</a>
+</div>
+
+<section class="hero">
+  <div>
+    <p class="eyebrow">PAINEL DE OPERAÇÕES CORPORATIVAS</p>
+    <h1>Painel de pedidos</h1>
+    <p class="muted">Olá, {{ user.display_name }}. Acompanhe a operação da conta em tempo real com telemetria unificada.</p>
+  </div>
+  <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+    <span class="slop-badge-glow">Nível Platinum 🌟</span>
+    <span class="role-badge">{% if user.role == 'admin' %}Administradora{% else %}Cliente{% endif %}</span>
+  </div>
+</section>
+
+<section class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon">📦</div>
+    <div class="stat-info">
+      <span class="stat-label">Total de Pedidos</span>
+      <span class="stat-value">{{ total_orders_count }}</span>
+      <span class="stat-subtext">Exibindo os {{ orders|length }} mais recentes</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">💬</div>
+    <div class="stat-info">
+      <span class="stat-label">Total de Chamados</span>
+      <span class="stat-value">{{ total_tickets_count }}</span>
+      <span class="stat-subtext">Exibindo os {{ recent_tickets|length }} mais recentes</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">⚡</div>
+    <div class="stat-info">
+      <span class="stat-label">Ambiente & Motor</span>
+      <span class="stat-value" style="font-size: 1.25rem;">Local SQLite + LLM</span>
+      <span class="stat-subtext">Latência: 12ms · 0 perdas</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">🤖</div>
+    <div class="stat-info">
+      <span class="stat-label">Índice de Sinergia IA</span>
+      <span class="stat-value" style="color: #8b5cf6;">99.4%</span>
+      <span class="stat-subtext">Otimização autônoma ativa</span>
+    </div>
+  </div>
+</section>
+
+<!-- Slop Widget: Insights de Produtividade com IA -->
+<section class="card ai-insights-dashboard-card">
+  <div class="card-header" style="border-bottom: none; padding-bottom: 0; margin-bottom: 14px;">
+    <h2>
+      <span style="font-size: 1.3rem;">🧠</span>
+      <span>Insights Preditivos de Governança e Logística 360</span>
+      <span class="ai-badge">Motor Cognitivo</span>
+    </h2>
+    <span class="muted" style="font-size: 0.8rem;">Atualizado há 1 minuto</span>
+  </div>
+  <div class="insights-grid">
+    <div class="insight-item">
+      <div class="insight-metric-header">
+        <span class="insight-dot"></span>
+        <strong>Eficiência da Cadeia de Valor</strong>
+      </div>
+      <p class="insight-desc">O pipeline de fulfillment processou todos os fluxos com 99.8% de alinhamento estratégico.</p>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width: 98%;"></div></div>
+    </div>
+    <div class="insight-item">
+      <div class="insight-metric-header">
+        <span class="insight-dot"></span>
+        <strong>Satisfação do Cliente (CSAT Preditivo)</strong>
+      </div>
+      <p class="insight-desc">Modelos de análise de sentimento indicam 99.4% de probabilidade de fidelização contínua.</p>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width: 95%;"></div></div>
+    </div>
+    <div class="insight-item">
+      <div class="insight-metric-header">
+        <span class="insight-dot"></span>
+        <strong>Compensação de Carbono Digital</strong>
+      </div>
+      <p class="insight-desc">100% das transações locais foram neutralizadas via créditos regenerativos certificados.</p>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width: 100%;"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="card-header">
+    <h2>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span>Pedidos recentes</span>
+      <span class="muted" style="font-size: 0.82rem; font-weight: 500; margin-left: 8px;">(Total registrado: <strong>{{ total_orders_count }}</strong>)</span>
+    </h2>
+    <a class="button-link secondary small" href="{{ url_for('orders.orders_page') }}">Ver todos os pedidos →</a>
+  </div>
+
+  {% if orders %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Status</th>
+          <th>Total</th>
+          <th>Cliente</th>
+          <th>Rastreio Inteligente</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        <tr>
+          <td>
+            <a class="order-link" href="{{ url_for('orders.order_detail_page', order_id=order.id) }}">
+              {{ order.order_number }}
+            </a>
+          </td>
+          <td>
+            <span class="badge badge-{{ order.status }}">
+              {% if order.status == 'processing' %}Em processamento
+              {% elif order.status == 'shipped' %}Enviado
+              {% else %}Entregue{% endif %}
+            </span>
+          </td>
+          <td class="price-tag">R$ {{ '%.2f'|format(order.total) }}</td>
+          <td>{{ order.customer }}</td>
+          <td>
+            <span class="smart-track-pill">⚡ SLA Garantido</span>
+          </td>
+          <td>
+            <a class="button-link secondary small" href="{{ url_for('orders.order_detail_page', order_id=order.id) }}">Detalhes</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted" style="text-align: center; padding: 24px 0;">Nenhum pedido encontrado no momento.</p>
+  {% endif %}
+</section>
+
+<section class="card">
+  <div class="card-header">
+    <h2>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span>Chamados recentes</span>
+      <span class="muted" style="font-size: 0.82rem; font-weight: 500; margin-left: 8px;">(Total registrado: <strong>{{ total_tickets_count }}</strong>)</span>
+    </h2>
+    <a class="button-link secondary small" href="{{ url_for('support.tickets_page') }}">Ver todos os chamados →</a>
+  </div>
+
+  {% if recent_tickets %}
+  <div style="display: grid; gap: 16px;">
+    {% for ticket in recent_tickets %}
+    <article style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: var(--radius-md); padding: 18px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-bottom: 8px;">
+        <div>
+          <h3 style="margin: 0 0 4px; font-size: 1.05rem;">
+            <a href="{{ url_for('support.ticket_page', ticket_id=ticket.id) }}">{{ ticket.title }}</a>
+          </h3>
+          <p class="muted" style="margin: 0; font-size: 0.82rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span>Aberto em <strong>{{ ticket.created_at[:10] }}</strong> por <strong>{{ ticket.customer }}</strong></span>
+            <span>•</span>
+            {% if ticket.priority_level == 'vip' %}
+            <span class="smart-track-pill" style="background: #fdf2f8; color: #db2777; border-color: #fbcfe8;">🌟 Canal VIP Gold</span>
+            {% elif ticket.priority_level == 'priority' %}
+            <span class="smart-track-pill" style="background: #ecfdf5; color: #059669; border-color: #a7f3d0;">⚡ Canal Prioritário</span>
+            {% else %}
+            <span class="smart-track-pill">Canal Standard</span>
+            {% endif %}
+          </p>
+        </div>
+        <span class="badge badge-{{ ticket.status }}">
+          {% if ticket.status == 'open' %}Aberto{% else %}Encerrado{% endif %}
+        </span>
+      </div>
+      <p style="margin: 10px 0 14px; color: var(--slate-700); font-size: 0.92rem; line-height: 1.5;">{{ ticket.preview|safe }}</p>
+      <div style="display: flex; justify-content: flex-end;">
+        <a class="button-link small secondary" href="{{ url_for('support.ticket_page', ticket_id=ticket.id) }}">Acessar chamado #{{ ticket.id }}</a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="muted" style="text-align: center; padding: 24px 0;">Nenhum chamado registrado.</p>
+  {% endif %}
+</section>
+{% endblock %}

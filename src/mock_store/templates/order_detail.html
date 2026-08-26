@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}{{ order.order_number }} · Mock Store Enterprise{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+  <a href="{{ url_for('orders.orders_page') }}">← Voltar para lista de pedidos</a>
+</div>
+
+<div class="card-header" style="border-bottom: none; margin-bottom: 24px; padding-bottom: 0;">
+  <div>
+    <p class="eyebrow">DETALHE DO PEDIDO CORPORATIVO</p>
+    <h1 style="font-size: 2rem; margin: 4px 0 0; color: var(--slate-900);">Pedido {{ order.order_number }}</h1>
+    <p class="muted" style="margin: 4px 0 0;">Titular da compra: <strong>{{ order.customer }}</strong> · <span style="color: #6366f1; font-weight: 600;">Rastreamento Quântico Ativo</span></p>
+  </div>
+  <span class="badge badge-{{ order.status }}" style="font-size: 0.9rem; padding: 8px 16px;">
+    {% if order.status == 'processing' %}Em processamento
+    {% elif order.status == 'shipped' %}Enviado
+    {% else %}Entregue{% endif %}
+  </span>
+</div>
+
+<section class="grid-2">
+  <div class="card">
+    <div class="card-header">
+      <h2>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+        <span>Itens do Pedido</span>
+      </h2>
+      <span class="muted" style="font-size: 0.8rem;">Garantia Vitalícia Enterprise</span>
+    </div>
+    
+    <ul class="item-list">
+      {% for item in items %}
+      <li>
+        <div>
+          <span style="font-weight: 600; color: var(--slate-800); display: block;">{{ item.description }}</span>
+          <span class="muted" style="font-size: 0.8rem;">Quantidade: {{ item.quantity }} unidade(s) · SKU: SYN-{{ item.id }}90</span>
+        </div>
+        <strong class="price-tag">R$ {{ '%.2f'|format(item.unit_price) }}</strong>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <div class="order-total-row">
+      <span>Total a Pagar</span>
+      <strong class="price-tag" style="font-size: 1.35rem; color: var(--primary-700);">R$ {{ '%.2f'|format(order.total) }}</strong>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>Fulfillment & Logística Inteligente</span>
+      </h2>
+    </div>
+
+    <div class="delivery-box">
+      <span class="muted" style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">Endereço de Envio</span>
+      <p style="margin: 6px 0 0; font-size: 0.95rem; font-weight: 600; color: var(--slate-800);">{{ order.shipping_address }}</p>
+    </div>
+
+    <div class="slop-tracking-box">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+        <strong style="font-size: 0.85rem; color: #4338ca;">⚡ Previsão de Rota por IA</strong>
+        <span class="ai-badge" style="font-size: 0.65rem;">99.2% Precisão</span>
+      </div>
+      <p style="margin: 0; font-size: 0.82rem; color: #4b5563; line-height: 1.4;">
+        Roteamento autônomo otimizado contra congestionamentos locais. Compensação de 1.4kg de CO₂ concluída.
+      </p>
+    </div>
+
+    <div style="margin-top: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+      <p class="muted" style="font-size: 0.85rem; margin: 0;">
+        📅 Pedido registrado em <strong>{{ order.placed_at }}</strong>
+      </p>
+      <a class="button-link secondary small" href="{{ url_for('orders.download_receipt', file='receipt_default.txt', order_id=order.id) }}">
+        📄 Baixar Comprovante
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}
